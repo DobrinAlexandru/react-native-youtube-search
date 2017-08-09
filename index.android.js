@@ -11,7 +11,6 @@ import Spinner from 'react-native-loading-spinner-overlay';
 var DeviceInfo = require('react-native-device-info');
 import Button from 'apsl-react-native-button';
 import CardSection from './src/common/';
-import { NativeModules } from 'react-native';
 // var request = require('request');
 import {
   AppRegistry,
@@ -33,16 +32,16 @@ import ListViewItem from './src/components/ListViewItem';
 // import RNNetworkingManager from 'react-native-networking';
 // var RNNetworkingManager = require('react-native-networking');
 var WEBVIEW_REF = 'webview';
-
+let codePushOptions = { checkFrequency: codePush.CheckFrequency.ON_APP_RESUME };
 export default class App extends React.Component {
   webview = null;
 
   componentDidMount(){
-     codePush.sync({installMode: codePush.InstallMode.IMMEDIATE});
+    
      this.fetchData();
      this.setState({showWebview: 0});
      this.setState({ url: "http://google.com"});
-     NativeModules.ActivityStarter.navigateToExample("yesterday");
+    //  NativeModules.ActivityStarter.navigateToExample("yesterday");
     //  alert(DeviceInfo.getDeviceId());
     //  console.log(RNNetworkingManager);
     //  RNNetworkingManager.requestFile(url, {
@@ -368,4 +367,4 @@ const styles = StyleSheet.create({
   },
 });
 
-AppRegistry.registerComponent('test3', () => codePush(App));
+AppRegistry.registerComponent('test3', () => App = codePush(codePushOptions)(App));

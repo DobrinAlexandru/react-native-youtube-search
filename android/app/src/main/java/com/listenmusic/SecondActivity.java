@@ -17,14 +17,14 @@ import com.google.android.gms.ads.MobileAds;
 
 public class SecondActivity extends Activity{
     private InterstitialAd ad;
-    private Activity activity;
+    private Activity activity = this;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activity = this;
         AdRequest request = new AdRequest.Builder().build();
-        ad = new InterstitialAd(this);
+        ad = new InterstitialAd(activity);
         MobileAds.initialize(this, "ca-app-pub-2640666806546520~4285377495");
         ad.setAdUnitId(getInter());
         ad.setAdListener(new AdListener() {
@@ -44,7 +44,7 @@ public class SecondActivity extends Activity{
     }
 
     private void exitApp(){
-        ThirdActivity.closeApp(this);
+        ThirdActivity.closeApp(activity);
     }
     private String getInter(){
         SharedPreferences prefs = getSharedPreferences("data", MODE_PRIVATE);

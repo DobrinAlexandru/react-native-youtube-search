@@ -51,12 +51,11 @@ public class MainApplication extends Application implements ReactApplication {
             new RNCrashesPackage(MainApplication.this, getResources().getString(R.string.mobileCenterCrashes_whenToSendCrashes)),
             new RNAnalyticsPackage(MainApplication.this, getResources().getString(R.string.mobileCenterAnalytics_whenToEnableAnalytics)),
             new RNMobileCenterPackage(MainApplication.this),
-            new CodePush("K_Z_kBbsCUjgIThyqwGnDQTdbMFN03a33b4a-bae3-4400-8800-6c76f1e15d62", getApplicationContext(), BuildConfig.DEBUG),
+            new CodePush("Zrclo9df-Q20E3x-5wh_016jFL7m03a33b4a-bae3-4400-8800-6c76f1e15d62", getApplicationContext(), BuildConfig.DEBUG),
             new RNDeviceInfo(),
             new VectorIconsPackage(),
             new RNFetchBlobPackage(),
-              new RNAdMobPackage(),
-              new ActivityStarterReactPackage()
+              new RNAdMobPackage()
       );
     }
   };

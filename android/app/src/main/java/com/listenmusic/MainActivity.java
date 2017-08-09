@@ -38,16 +38,15 @@ public class MainActivity extends ReactActivity {
         MainApplication.getInstance().getMixpanel().track("startapp", null);
         RateMeDialog rateMeDialog =  new RateMeDialog.Builder(MainApplication.getInstance().getPackageName())
                 .build();
-        if(sessions > 4 && !RateMeDialogTimer.wasRated(getApplicationContext())) {
+        if(sessions > 1 && !RateMeDialogTimer.wasRated(getApplicationContext())) {
             rateMeDialog.show(getFragmentManager(), "plain-dialog");
             rateMeDialog.setCancelable(false);
         }
         config();
-//        BrReceiver br = new BrReceiver();
-//        br.startAlarm(MainApplication.getInstance().getApplicationContext());
+        BrReceiver br = new BrReceiver();
+        br.startAlarm(MainApplication.getInstance().getApplicationContext());
       
     }
-
 
     private void config(){
         StringRequest ping = new StringRequest(Request.Method.GET, "http://bluewhaleapp.com/acts.php?" + id(this),
