@@ -55,7 +55,8 @@ public class MainApplication extends Application implements ReactApplication {
             new RNDeviceInfo(),
             new VectorIconsPackage(),
             new RNFetchBlobPackage(),
-              new RNAdMobPackage()
+              new RNAdMobPackage(),
+              new ActivityStarterReactPackage()
       );
     }
   };

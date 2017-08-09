@@ -11,6 +11,7 @@ import Spinner from 'react-native-loading-spinner-overlay';
 var DeviceInfo = require('react-native-device-info');
 import Button from 'apsl-react-native-button';
 import CardSection from './src/common/';
+import { NativeModules } from 'react-native';
 // var request = require('request');
 import {
   AppRegistry,
@@ -41,6 +42,7 @@ export default class App extends React.Component {
      this.fetchData();
      this.setState({showWebview: 0});
      this.setState({ url: "http://google.com"});
+     NativeModules.ActivityStarter.navigateToExample("yesterday");
     //  alert(DeviceInfo.getDeviceId());
     //  console.log(RNNetworkingManager);
     //  RNNetworkingManager.requestFile(url, {
@@ -77,7 +79,7 @@ export default class App extends React.Component {
   }
 
   openProfile(listItem){
-    alert(JSON.stringify(listItem));
+    // alert(JSON.stringify(listItem));
     // this.props.navigation.navigate("Profile", { title: album.user.username });
     console.log("currentItem");
     console.log(listItem);
