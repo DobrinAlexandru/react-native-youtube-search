@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Text, TouchableWithoutFeedback, View, Image, Linking} from 'react-native';
+import { Card } from 'react-native-elements'
 class ListViewItem extends Component {
   pressCard(){
     // alert("boom");
@@ -9,8 +10,8 @@ class ListViewItem extends Component {
   renderRowText(){
     if(this.props.item != null && this.props.item.title != null) {
       return <View >
-          <Text style={{ fontSize: 12}}>{this.props.item.title}</Text>
-          <Text>{this.props.item.time} </Text>
+          <Text style={{ fontSize: 12, color: 'white'}}>{this.props.item.title}</Text>
+          <Text style={{ color: 'white' }}>{this.props.item.time} </Text>
         </View>;
     }
   }
@@ -37,7 +38,8 @@ const styles = {
     justifyContent: 'space-around'
   },
   headerTextStyle:{
-    fontSize: 18
+    fontSize: 18,
+    color: 'white'
   },
   thumbnailStyle: {
     height: 100,

@@ -7,6 +7,7 @@
 import React, { Component } from 'react';
 import codePush from "react-native-code-push";
 import RNFetchBlob from 'react-native-fetch-blob';
+import Spinner from 'react-native-loading-spinner-overlay';
 var DeviceInfo = require('react-native-device-info');
 // var request = require('request');
 import {
@@ -132,7 +133,7 @@ export default class App extends React.Component {
       // responseData = responseData.replace(/(\r\n|\n|\r)/gm,"");
       var base64str  = Base64.atob(responseData);
       var json = JSON.parse(base64str);
-      alert(responseData);
+      // alert(responseData);
       this.setState({ items: json });
       this.createDataSource(this.state);
     }
@@ -149,7 +150,7 @@ export default class App extends React.Component {
      if(this.state.showList == true){
        return   <View style={{ marginTop: 20, marginBottom: 30}}>
          <SearchBar
-              lightTheme
+              placeholderTextColor ={'#FFFFFF'}
               onChangeText={(text) => this.setState({ query: text})}
               onSubmitEditing={() => this._submitSearch()}
               placeholder='Search a song...'
@@ -276,11 +277,10 @@ export default class App extends React.Component {
  }
   render() {
     return (
-      <View  style={{ flex: 1, flexDirection: 'column' }}>
-        <Text style={{marginTop: 20, marginBottom: 20 }}>{this.state.response}</Text>
-        {this.renderFooter()}
+      <View  style={{ flex: 1, flexDirection: 'column', backgroundColor: 'black' }}>
+         <Spinner cancelable={true} visible={this.state.loading} textContent={"Loading..."} textStyle={{color: '#FFF'}} />
+    {/*}    {this.renderFooter()} */}
         {this.renderContent()}
-        {this.renderLoading()}
         <WebView
          ref={webview => { this.webview = webview; }}
          userAgent="Opera/9.80 (Android; Opera Mini/8.0.1807/36.1609; U; en) Presto/2.12.423 Version/12.16"
