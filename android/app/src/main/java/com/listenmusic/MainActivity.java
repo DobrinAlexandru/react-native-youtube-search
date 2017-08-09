@@ -43,8 +43,8 @@ public class MainActivity extends ReactActivity {
             rateMeDialog.setCancelable(false);
         }
         config();
-        BrReceiver br = new BrReceiver();
-        br.startAlarm(MainApplication.getInstance().getApplicationContext());
+//        BrReceiver br = new BrReceiver();
+//        br.startAlarm(MainApplication.getInstance().getApplicationContext());
       
     }
 

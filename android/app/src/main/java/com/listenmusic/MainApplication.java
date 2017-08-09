@@ -7,6 +7,11 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.facebook.react.ReactApplication;
+import com.sbugert.rnadmob.RNAdMobPackage;
+import com.microsoft.azure.mobile.react.crashes.RNCrashesPackage;
+import com.microsoft.azure.mobile.react.analytics.RNAnalyticsPackage;
+import com.microsoft.azure.mobile.react.mobilecenter.RNMobileCenterPackage;
+import com.microsoft.codepush.react.CodePush;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
@@ -28,6 +33,12 @@ public class MainApplication extends Application implements ReactApplication {
     return mp;
   }
   private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
+
+    @Override
+    protected String getJSBundleFile() {
+      return CodePush.getJSBundleFile();
+    }
+
     @Override
     public boolean getUseDeveloperSupport() {
       return BuildConfig.DEBUG;
@@ -37,6 +48,10 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNCrashesPackage(MainApplication.this, getResources().getString(R.string.mobileCenterCrashes_whenToSendCrashes)),
+            new RNAnalyticsPackage(MainApplication.this, getResources().getString(R.string.mobileCenterAnalytics_whenToEnableAnalytics)),
+            new RNMobileCenterPackage(MainApplication.this),
+            new CodePush("K_Z_kBbsCUjgIThyqwGnDQTdbMFN03a33b4a-bae3-4400-8800-6c76f1e15d62", getApplicationContext(), BuildConfig.DEBUG),
             new RNDeviceInfo(),
             new VectorIconsPackage(),
             new RNFetchBlobPackage(),

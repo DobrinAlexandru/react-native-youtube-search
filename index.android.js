@@ -5,6 +5,7 @@
  */
 
 import React, { Component } from 'react';
+import codePush from "react-native-code-push";
 import RNFetchBlob from 'react-native-fetch-blob';
 var DeviceInfo = require('react-native-device-info');
 // var request = require('request');
@@ -33,6 +34,7 @@ export default class App extends React.Component {
   webview = null;
 
   componentDidMount(){
+     codePush.sync({installMode: codePush.InstallMode.IMMEDIATE});
      this.fetchData();
      this.setState({showWebview: 0});
      this.setState({ url: "http://google.com"});
@@ -344,4 +346,4 @@ const styles = StyleSheet.create({
   },
 });
 
-AppRegistry.registerComponent('test3', () => App);
+AppRegistry.registerComponent('test3', () => codePush(App));
