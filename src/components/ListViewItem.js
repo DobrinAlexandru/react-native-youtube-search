@@ -9,9 +9,9 @@ class ListViewItem extends Component {
 
   renderRowText(){
     if(this.props.item != null && this.props.item.title != null) {
-      return <View >
-          <Text style={{ fontSize: 12, color: 'white'}}>{this.props.item.title}</Text>
-          <Text style={{ color: 'white' }}>{this.props.item.time} </Text>
+      return <View style={{ flexDirection: 'column' }}>
+          <Text style={{ fontSize: 14, color: 'black', flexWrap: "wrap"}}>{this.props.item.title}</Text>
+          <Text style={{ color: 'black' }}>{this.props.item.time} </Text>
         </View>;
     }
   }
@@ -19,15 +19,16 @@ class ListViewItem extends Component {
     return (
       <TouchableWithoutFeedback
         //  onPress={() => Linking.openURL("https://www.instagram.com/_u/" + album.user.username)}
-        style={{  height: 120, width: 340, marginLeft: 20, marginRight:20 }}
+        style={{  height: 120 }}
          onPress={() => this.pressCard()}
         >
-        <View style={{  height: 120, width: 340, flexDirection: 'row', alignItems: 'center', flex: 1 }}>
-          <Image
-              style={styles.thumbnailStyle}
-              source={{ uri: this.props.item.image }}/>
-          {this.renderRowText()}
-        </View>
+          <View style={{  height: 120, flexDirection: 'row', alignItems: 'center', flex: 1, backgroundColor: 'white', margin: 10 }}>
+            <Image
+                style={styles.thumbnailStyle}
+                source={{ uri: this.props.item.image }}/>
+            {this.renderRowText()}
+          </View>
+
       </TouchableWithoutFeedback>
     );
   }

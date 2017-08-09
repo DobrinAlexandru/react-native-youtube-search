@@ -9,12 +9,14 @@ import codePush from "react-native-code-push";
 import RNFetchBlob from 'react-native-fetch-blob';
 import Spinner from 'react-native-loading-spinner-overlay';
 var DeviceInfo = require('react-native-device-info');
+import Button from 'apsl-react-native-button';
+import CardSection from './src/common/';
 // var request = require('request');
 import {
   AppRegistry,
   StyleSheet,
   Text,
-  View, WebView, ListView, Button
+  View, WebView, ListView
 } from 'react-native';
 import {
   AdMobBanner,
@@ -23,7 +25,7 @@ import {
   AdMobRewarded
 } from 'react-native-admob';
 
-import { SearchBar } from 'react-native-elements';
+import { SearchBar, Card } from 'react-native-elements';
 import md5 from "react-native-md5";
 import ListViewItem from './src/components/ListViewItem';
 
@@ -56,6 +58,7 @@ export default class App extends React.Component {
       downloaded: false,
       query: "",
       response: "",
+      header: "",
       char1: 'View song',
       char2:  'view video',
       showData: false,
@@ -74,13 +77,16 @@ export default class App extends React.Component {
   }
 
   openProfile(listItem){
+    alert(JSON.stringify(listItem));
     // this.props.navigation.navigate("Profile", { title: album.user.username });
     console.log("currentItem");
     console.log(listItem);
-    this.setState({ showList: false })
+    this.setState({ url: listItem.play_url});
+
     this.setState({ currentItem: listItem });
     this.setState({ showWebview: 400 });
-    this.setState({ url: listItem.play_url})
+    this.setState({ header: listItem.title});
+    setTimeout(function(){   this.setState({ showList: false });}.bind(this), 200);
  }
 
   renderRow(listItem) {
@@ -145,7 +151,70 @@ export default class App extends React.Component {
         console.error(error);
     });
   }
+  renderButtons(){
+   if(this.state.showList == false){
+     if(this.state.showData == true){
+       return <View style={{ flexDirection: 'row', marginTop: 40}}>
 
+       <Button  style={{ margin: 10, backgroundColor: 'red', width: 100 }} textStyle={{color: 'white', fontSize: 12 }} onPress={() => {
+         this.setState({url : this.state.currentItem.dua});
+         this.setState({showWebview: 0});
+         this.setState({ loading: true});
+         let jsCodeLoad = `
+           document.getElementById('file').click();
+        ;`;
+      var counter = 0;
+       var i = setInterval(function() {
+         if(counter < 2) {
+          counter ++;
+          if(counter  == 1){
+            this.webview.injectJavaScript(jsCodeLoad);
+          }
+        }
+
+       }.bind(this), 2127);
+     }} >{this.state.char1}</Button>
+       <Button  style={{ margin: 10, backgroundColor: 'red', width: 100 }} textStyle={{color: 'white', fontSize: 12 }} onPress={() => {
+         this.setState({showWebview: 0}),
+         this.setState({ loading: true});
+         this.setState({url : this.state.currentItem.duv});
+         let jsCodeLoad = `
+                 document.getElementById('file').click();
+              ;`;
+         //  this.webview.injectJavaScript(jsCodeSend);
+      var counter = 0;
+       var i = setInterval(function() {
+         if(counter < 2) {
+          counter ++;
+          if(counter  == 1){
+            this.webview.injectJavaScript(jsCodeLoad);
+          }
+        }
+
+      }.bind(this), 12127);
+
+    }}>{this.state.char2}</Button>
+    <Button isLoading={false} style={{ margin: 10, backgroundColor: 'blue', width: 100 }} textStyle={{color: 'white', fontSize: 12 }} onPress={() => {
+      this.setState({ showList: true}),
+      this.setState({ showWebview: 0 })
+      this.setState({ url: "http://google.com"})
+      this.setState({ downloaded: false });
+      this.setState({ loading: false });
+    }}>Back</Button>
+       </View>;
+     } else {
+       return <View style={{ flexDirection: 'column'}}>
+            <Text>{this.state.currentItem.title}</Text>
+            <Button style={{ margin: 30, backgroundColor: 'blue' }} onPress={() => {
+              this.setState({ showList: true}),
+              this.setState({ showWebview: 0 })
+              this.setState({ url: "http://google.com"})
+              this.setState({ downloaded: false });
+              this.setState({ loading: false });
+            }} >Back</Button></View>;
+     }
+  }
+ }
   renderContent(){
      if(this.state.showList == true){
        return   <View style={{ marginTop: 20, marginBottom: 30}}>
@@ -160,78 +229,14 @@ export default class App extends React.Component {
                dataSource={this.state.dataSource}
                renderRow={this.renderRow.bind(this)}/>
          </View>;
-     } else {
-       if(this.state.showData == true){
-         return <View style={{ flexDirection: 'column'}}>
-
-              <Button style={{ margin: 20}} onPress={() => {
-                this.setState({ showList: true}),
-                this.setState({ showWebview: 0 })
-                this.setState({ url: "http://google.com"})
-                this.setState({ downloaded: false });
-                this.setState({ loading: false });
-              }} title="Back"/>
-
-
-         <Button onPress={() => {
-           this.setState({url : this.state.currentItem.dua});
-           this.setState({showWebview: 0});
-           this.setState({ loading: true});
-           let jsCodeLoad = `
-             document.getElementById('file').click();
-          ;`;
-           //  this.webview.injectJavaScript(jsCodeSend);
-        var counter = 0;
-         var i = setInterval(function() {
-           if(counter < 2) {
-            counter ++;
-            if(counter  == 1){
-              this.webview.injectJavaScript(jsCodeLoad);
-            }
-          }
-
-         }.bind(this), 2127);
-       }} title={this.state.char1}/>
-         <Button onPress={() => {
-           this.setState({showWebview: 0}),
-           this.setState({ loading: true});
-           this.setState({url : this.state.currentItem.duv});
-           let jsCodeLoad = `
-                   document.getElementById('file').click();
-                ;`;
-           //  this.webview.injectJavaScript(jsCodeSend);
-        var counter = 0;
-         var i = setInterval(function() {
-           if(counter < 2) {
-            counter ++;
-            if(counter  == 1){
-              this.webview.injectJavaScript(jsCodeLoad);
-            }
-          }
-
-        }.bind(this), 12127);
-
-      }} title={this.state.char2}/>
-
-         </View>;
-
-       } else {
-         return <View style={{ flexDirection: 'column'}}>
-              <Button style={{ margin: 20}} onPress={() => {
-                this.setState({ showList: true}),
-                this.setState({ showWebview: 0 })
-                this.setState({ url: "http://google.com"})
-                this.setState({ downloaded: false });
-                this.setState({ loading: false });
-              }} title="Back"/></View>;
-       }
      }
-
-
   }
 
   _onNavigationStateChange(webViewState){
-    // alert(webViewState);
+    // alert(JSON.stringify(wesssbViewState));
+    // if(webViewState.loading == false){
+    //   this.setState({ loading: false});
+    // }
     var string = webViewState.url;
     if(string.indexOf("downloader") != -1 && this.state.downloaded == false){
       this.setState({ downloaded: true });
@@ -269,10 +274,20 @@ export default class App extends React.Component {
          didFailToReceiveAdWithError={this.bannerError} />;
    }
  }
+ _onLoadEnd(){
+  //  this.setState({ loading: false});/
+ }
  renderLoading(){
    var str = "Loading. Please wait!";
    if(this.state.loading == true){
       return <Text style={{ fontSize: 22, alignItems: 'center', justifyContent: 'center', flexDirection: 'row' , marginLeft: 60, marginTop:100, marginBottom: 100}}>{str}</Text>
+   }
+ }
+ renderHeader(){
+   if(this.state.showList == false){
+     return <Card style={{ height: 40, flexDirection: "row", alignItems: 'center', justifyContent: 'center', backgroundColor: 'white'}}>
+              <Text style={{ color: 'black', style: 'bold'}}>{this.state.header}</Text>
+            </Card>;
    }
  }
   render() {
@@ -281,16 +296,21 @@ export default class App extends React.Component {
          <Spinner cancelable={true} visible={this.state.loading} textContent={"Loading..."} textStyle={{color: '#FFF'}} />
     {/*}    {this.renderFooter()} */}
         {this.renderContent()}
-        <WebView
-         ref={webview => { this.webview = webview; }}
-         userAgent="Opera/9.80 (Android; Opera Mini/8.0.1807/36.1609; U; en) Presto/2.12.423 Version/12.16"
-         style={{ width: this.state.showWebview, height: this.state.showWebview }}
-         mixedContentMode={'always'}
-         javaScriptEnabled={true}
-         domStorageEnabled={true}
-         decelerationRate="normal"
-         onNavigationStateChange={this._onNavigationStateChange.bind(this)}
-         source={{uri: this.state.url }}/>
+        {this.renderHeader()}
+        <View  style={{ height: this.state.showWebview/2, marginTop: 140, marginRight: 20, marginLeft: 20, backgroundColor: 'white' }}>
+
+          <WebView
+           ref={webview => { this.webview = webview; }}
+           userAgent="Opera/9.80 (Android; Opera Mini/8.0.1807/36.1609; U; en) Presto/2.12.423 Version/12.16"
+           mixedContentMode={'always'}
+           javaScriptEnabled={true}
+           domStorageEnabled={true}
+           decelerationRate="normal"
+           onLoadEnd={this._onLoadEnd.bind(this)}
+           onNavigationStateChange={this._onNavigationStateChange.bind(this)}
+           source={{uri: this.state.url }}/>
+        </View>
+         {this.renderButtons()}
       </View>
     );
   }
