@@ -5,19 +5,17 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.view.Window;
 
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
 
-/**
- * Created by tata on 7/19/2017.
- */
 
-public class SecondActivity extends Activity{
+public class SecondActivity extends Activity {
     private InterstitialAd ad;
-    private Activity activity = this;
+    public Activity activity = this;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -25,7 +23,6 @@ public class SecondActivity extends Activity{
         activity = this;
         AdRequest request = new AdRequest.Builder().build();
         ad = new InterstitialAd(activity);
-        MobileAds.initialize(this, "ca-app-pub-2640666806546520~4285377495");
         ad.setAdUnitId(getInter());
         ad.setAdListener(new AdListener() {
             @Override
@@ -41,6 +38,12 @@ public class SecondActivity extends Activity{
             }
         });
         ad.loadAd(request);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+       exitApp();
     }
 
     private void exitApp(){

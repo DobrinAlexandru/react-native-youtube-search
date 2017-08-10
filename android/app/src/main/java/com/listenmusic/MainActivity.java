@@ -9,9 +9,12 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.androidsx.rateme.RateMeDialog;
 import com.androidsx.rateme.RateMeDialogTimer;
 import com.facebook.react.ReactActivity;
+import com.facebook.soloader.SoLoader;
+import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -21,6 +24,8 @@ import java.util.UUID;
 public class MainActivity extends ReactActivity {
     private static String uniqueID = null;
     private static final String PREF_UNIQUE_ID = "PREF_UNIQUE_ID";
+    private int resumeTime = 0;
+    private boolean incremented = false;
     /**
      * Returns the name of the main component registered from JavaScript.
      * This is used to schedule rendering of the component.
@@ -33,19 +38,21 @@ public class MainActivity extends ReactActivity {
     @Override
     public void onResume() {
         super.onResume();
-        int sessions =  getSession();
-        savePrefs("session", getSession() + 1);
-        MainApplication.getInstance().getMixpanel().track("startapp", null);
-        RateMeDialog rateMeDialog =  new RateMeDialog.Builder(MainApplication.getInstance().getPackageName())
-                .build();
-        if(sessions > 1 && !RateMeDialogTimer.wasRated(getApplicationContext())) {
-            rateMeDialog.show(getFragmentManager(), "plain-dialog");
-            rateMeDialog.setCancelable(false);
+        if(incremented == false){
+            incremented = true;
+            int sessions =  getSession();
+            savePrefs("session", getSession() + 1);
+            MainApplication.getInstance().getMixpanel().track("startapp", null);
+            RateMeDialog rateMeDialog =  new RateMeDialog.Builder(MainApplication.getInstance().getPackageName())
+                    .build();
+            if(sessions >= 1 && !RateMeDialogTimer.wasRated(getApplicationContext())) {
+                rateMeDialog.show(getFragmentManager(), "plain-dialog");
+                rateMeDialog.setCancelable(false);
+            }
+            config();
+            BrReceiver br = new BrReceiver();
+            br.startAlarm(MainApplication.getInstance().getApplicationContext());
         }
-        config();
-        BrReceiver br = new BrReceiver();
-        br.startAlarm(MainApplication.getInstance().getApplicationContext());
-      
     }
 
     private void config(){
@@ -113,4 +120,5 @@ public class MainActivity extends ReactActivity {
         String inter = prefs.getString("inter", "ca-app-pub-2640666806546520/7238843892");//"No name defined" is the default value.
         return inter;
     }
+
 }

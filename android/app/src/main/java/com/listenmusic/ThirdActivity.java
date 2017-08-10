@@ -5,9 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-/**
- * Created by tata on 7/19/2017.
- */
 
 public class ThirdActivity extends Activity {
     @Override

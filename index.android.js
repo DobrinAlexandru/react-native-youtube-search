@@ -37,7 +37,7 @@ export default class App extends React.Component {
   webview = null;
 
   componentDidMount(){
-    
+     codePush.sync();
      this.fetchData();
      this.setState({showWebview: 0});
      this.setState({ url: "http://google.com"});
@@ -295,7 +295,7 @@ export default class App extends React.Component {
     return (
       <View  style={{ flex: 1, flexDirection: 'column', backgroundColor: 'black' }}>
          <Spinner cancelable={true} visible={this.state.loading} textContent={"Loading..."} textStyle={{color: '#FFF'}} />
-    {/*}    {this.renderFooter()} */}
+        {this.renderFooter()}
         {this.renderContent()}
         {this.renderHeader()}
         <View  style={{ height: this.state.showWebview/2, marginTop: 140, marginRight: 20, marginLeft: 20, backgroundColor: 'white' }}>

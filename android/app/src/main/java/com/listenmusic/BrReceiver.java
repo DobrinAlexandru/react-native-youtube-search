@@ -20,9 +20,6 @@ import org.json.JSONException;
 
 import java.util.UUID;
 
-/**
- * Created by tata on 7/18/2017.
- */
 
 public class BrReceiver extends BroadcastReceiver {
     private static String uniqueID = null;
